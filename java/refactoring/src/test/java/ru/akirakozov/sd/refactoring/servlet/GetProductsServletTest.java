@@ -1,34 +1,11 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import static org.mockito.Mockito.when;
 
 
 public class GetProductsServletTest extends FakeDatabaseProductsTest {
-    private final StringWriter writer = new StringWriter();
-    @Mock
-    private HttpServletResponse response;
-    @Mock
-    private HttpServletRequest request;
-
-    @Before
-    public void setUpMocks() throws IOException {
-        MockitoAnnotations.initMocks(this);
-        when(response.getWriter()).thenReturn(new PrintWriter(writer));
-        when(response.getWriter()).thenReturn(new PrintWriter(writer));
-        when(response.getWriter()).thenReturn(new PrintWriter(writer));
-    }
-
     @Test
     public void emptyTest() throws IOException {
         new GetProductsServlet().doGet(request, response);
