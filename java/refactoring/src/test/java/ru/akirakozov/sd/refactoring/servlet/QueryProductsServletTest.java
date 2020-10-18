@@ -26,7 +26,7 @@ public class QueryProductsServletTest extends FakeDatabaseProductsTest {
     @Test
     public void emptyTest() throws IOException {
         servlet.doGet(request, response);
-        stripAndCheck(writer.toString(), "Unknown command: null");
+        stripAndCheck(writer.toString(), "parameter 'command' don't set");
     }
 
     @Test
