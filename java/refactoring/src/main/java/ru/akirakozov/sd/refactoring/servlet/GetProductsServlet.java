@@ -21,18 +21,13 @@ public class GetProductsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            response.getWriter().println("<html><body>");
-            List<Product> products = database.selectAll();
-            for (Product product : products) {
-                response.getWriter().print  (product.toHtml());
-                response.getWriter().println("</br>");
-            }
-            response.getWriter().println("</body></html>");
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        response.getWriter().println("<html><body>");
+        List<Product> products = database.selectAll();
+        for (Product product : products) {
+            response.getWriter().print(product.toHtml());
+            response.getWriter().println("</br>");
         }
+        response.getWriter().println("</body></html>");
 
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);

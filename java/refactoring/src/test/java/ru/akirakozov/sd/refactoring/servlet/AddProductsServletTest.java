@@ -1,6 +1,7 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import ru.akirakozov.sd.refactoring.domain.Product;
 
@@ -11,17 +12,23 @@ import static org.mockito.Mockito.when;
 
 
 public class AddProductsServletTest extends FakeDatabaseProductsTest {
+    private AddProductServlet servlet;
+
+    @Before
+    public void setUp() {
+        servlet = new AddProductServlet(database);
+    }
 
     @Test(expected = Exception.class)
     public void emptyParamsTest() throws IOException {
-        new AddProductServlet().doGet(request, response);
+        servlet.doGet(request, response);
     }
 
     @Test
     public void simpleTest() throws IOException {
         when(request.getParameter("name")).thenReturn("test name");
         when(request.getParameter("price")).thenReturn("10");
-        new AddProductServlet().doGet(request, response);
+        servlet.doGet(request, response);
         stripAndCheck("OK", writer.toString());
         List<Product> result = database.selectAll();
         Assert.assertEquals(1, result.size());

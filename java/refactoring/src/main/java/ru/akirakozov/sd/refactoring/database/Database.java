@@ -17,6 +17,10 @@ public abstract class Database<T> {
 
     public abstract List<T> selectAll();
 
+    public void insert(T obj) {
+        insert(List.of(obj));
+    }
+
     public void insert(List<T> objs) {
         if (objs.size() == 0) {
             throw new IllegalArgumentException("count of object must be more that one");
