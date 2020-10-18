@@ -9,7 +9,7 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 
-public class AddProductServletTest extends FakeDatabaseProductTest {
+public class AddProductsServletTest extends FakeDatabaseProductsTest {
 
     @Test(expected = Exception.class)
     public void emptyParamsTest() throws IOException {

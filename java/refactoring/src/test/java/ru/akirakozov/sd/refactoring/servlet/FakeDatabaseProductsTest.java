@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-public class FakeDatabaseProductTest {
+public class FakeDatabaseProductsTest {
     private static final String DATABASE_DEFAULT_NAME = "test";
     private static final String DATABASE_CONNECTION_TEMPLATE = "jdbc:sqlite:%s.db";
     private final String dataBaseConnectionString;
@@ -28,11 +28,11 @@ public class FakeDatabaseProductTest {
     @Mock
     protected HttpServletRequest request;
 
-    public FakeDatabaseProductTest() {
+    public FakeDatabaseProductsTest() {
         this(DATABASE_DEFAULT_NAME);
     }
 
-    public FakeDatabaseProductTest(String databaseName) {
+    public FakeDatabaseProductsTest(String databaseName) {
         this.dataBaseConnectionString = String.format(DATABASE_CONNECTION_TEMPLATE, databaseName);
     }
 

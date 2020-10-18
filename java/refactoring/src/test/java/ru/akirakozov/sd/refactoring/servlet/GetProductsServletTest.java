@@ -14,7 +14,7 @@ import java.io.StringWriter;
 import static org.mockito.Mockito.when;
 
 
-public class GetProductServletTest extends FakeDatabaseProductTest {
+public class GetProductsServletTest extends FakeDatabaseProductsTest {
     private final StringWriter writer = new StringWriter();
     @Mock
     private HttpServletResponse response;

@@ -12,7 +12,7 @@ import java.sql.Statement;
 /**
  * @author akirakozov
  */
-public class QueryServlet extends HttpServlet {
+public class QueryProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String command = request.getParameter("command");
