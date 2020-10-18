@@ -5,22 +5,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import ru.akirakozov.sd.refactoring.database.Database;
+import ru.akirakozov.sd.refactoring.database.ProductDatabase;
+import ru.akirakozov.sd.refactoring.domain.Product;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.mockito.Mockito.when;
 
 public class FakeDatabaseProductsTest {
-    private static final String DATABASE_DEFAULT_NAME = "test";
-    private static final String DATABASE_CONNECTION_TEMPLATE = "jdbc:sqlite:%s.db";
-    private final String dataBaseConnectionString;
+    private static final String DEFAULT_DATABASE_CONNECTION_STRING = "jdbc:sqlite:test.db";
+    protected final Database<Product> database;
 
     protected StringWriter writer = new StringWriter();
     @Mock
@@ -29,11 +28,11 @@ public class FakeDatabaseProductsTest {
     protected HttpServletRequest request;
 
     public FakeDatabaseProductsTest() {
-        this(DATABASE_DEFAULT_NAME);
+        this(DEFAULT_DATABASE_CONNECTION_STRING);
     }
 
-    public FakeDatabaseProductsTest(String databaseName) {
-        this.dataBaseConnectionString = String.format(DATABASE_CONNECTION_TEMPLATE, databaseName);
+    public FakeDatabaseProductsTest(String connectionString) {
+        this.database = new ProductDatabase(connectionString);
     }
 
     @Before
@@ -46,44 +45,12 @@ public class FakeDatabaseProductsTest {
 
     @Before
     public void createTestDatabase() {
-        execSql("CREATE TABLE IF NOT EXISTS PRODUCT" +
-                "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                " NAME           TEXT    NOT NULL, " +
-                " PRICE          INT     NOT NULL)");
+        database.createIfNotExist();
     }
 
     @After
     public void deleteTestDatabase() {
-        execSql("DROP TABLE IF EXISTS PRODUCT");
-    }
-
-    protected List<List<String>> selectSql(String sql, List<String> fields) {
-        List<List<String>> result = new ArrayList<>();
-        try (Connection c = DriverManager.getConnection(dataBaseConnectionString)) {
-            Statement stmt = c.createStatement();
-            ResultSet resultSet = stmt.executeQuery(sql);
-            while (resultSet.next()) {
-                List<String> tmp = new ArrayList<>();
-                for (String field : fields) {
-                    tmp.add(resultSet.getString(field));
-                }
-                result.add(tmp);
-            }
-            stmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return result;
-    }
-
-    protected void execSql(String sql) {
-        try (Connection c = DriverManager.getConnection(dataBaseConnectionString)) {
-            Statement stmt = c.createStatement();
-            stmt.executeUpdate(sql);
-            stmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        database.dropIfExist();
     }
 
     protected void stripAndCheck(String result, String actual) {

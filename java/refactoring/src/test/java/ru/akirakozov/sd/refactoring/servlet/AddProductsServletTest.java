@@ -2,6 +2,7 @@ package ru.akirakozov.sd.refactoring.servlet;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ru.akirakozov.sd.refactoring.domain.Product;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,9 +23,9 @@ public class AddProductsServletTest extends FakeDatabaseProductsTest {
         when(request.getParameter("price")).thenReturn("10");
         new AddProductServlet().doGet(request, response);
         stripAndCheck("OK", writer.toString());
-        List<List<String>> result = selectSql("SELECT NAME, PRICE FROM PRODUCT", List.of("NAME", "PRICE"));
+        List<Product> result = database.selectAll();
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals("test name", result.get(0).get(0));
-        Assert.assertEquals("10", result.get(0).get(1));
+        Assert.assertEquals("test name", result.get(0).getName());
+        Assert.assertEquals(10, result.get(0).getPrice());
     }
 }
