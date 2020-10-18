@@ -17,6 +17,14 @@ public abstract class Database<T> {
 
     public abstract List<T> selectAll();
 
+    public abstract T max();
+
+    public abstract T min();
+
+    public abstract int sum();
+
+    public abstract int count();
+
     public void insert(T obj) {
         insert(List.of(obj));
     }
@@ -51,11 +59,26 @@ public abstract class Database<T> {
         return result;
     }
 
+    protected int execSqlIntAsResult(String sql) {
+        try (Connection c = DriverManager.getConnection(databaseConnectionString)) {
+            try (Statement stmt = c.createStatement()) {
+                try (ResultSet resultSet = stmt.executeQuery(sql)) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt(1);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
     protected void execSql(String sql) {
         try (Connection c = DriverManager.getConnection(databaseConnectionString)) {
-            Statement stmt = c.createStatement();
-            stmt.executeUpdate(sql);
-            stmt.close();
+            try (Statement stmt = c.createStatement()) {
+                stmt.executeUpdate(sql);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

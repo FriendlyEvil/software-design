@@ -19,7 +19,7 @@ public class Product {
     }
 
     public String toHtml() {
-        return name + '\t' + price;
+        return name + '\t' + price + "</br>";
     }
 
     public String toSqlData() {

@@ -26,7 +26,7 @@ public class Main {
 
         context.addServlet(new ServletHolder(new AddProductServlet(database)), "/add-product");
         context.addServlet(new ServletHolder(new GetProductsServlet(database)),"/get-products");
-        context.addServlet(new ServletHolder(new QueryProductsServlet()),"/query");
+        context.addServlet(new ServletHolder(new QueryProductsServlet(database)),"/query");
 
         server.start();
         server.join();

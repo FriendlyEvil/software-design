@@ -28,10 +28,34 @@ public class ProductDatabase extends Database<Product> {
         return new Product(obj.get(0), Long.parseLong(obj.get(1)));
     }
 
+    public List<Product> select(String sql) {
+        List<List<String>> select = selectSql(sql, List.of("NAME", "PRICE"));
+        return select.stream().map(this::parseProduct).collect(Collectors.toList());
+    }
+
     @Override
     public List<Product> selectAll() {
-        List<List<String>> select = selectSql("SELECT NAME, PRICE FROM PRODUCT", List.of("NAME", "PRICE"));
-        return select.stream().map(this::parseProduct).collect(Collectors.toList());
+        return select("SELECT NAME, PRICE FROM PRODUCT");
+    }
+
+    @Override
+    public Product max() {
+        return select("SELECT NAME, PRICE FROM PRODUCT ORDER BY PRICE DESC LIMIT 1").stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public Product min() {
+        return select("SELECT NAME, PRICE FROM PRODUCT ORDER BY PRICE LIMIT 1").stream().findFirst().orElse(null);
+    }
+
+    @Override
+    public int sum() {
+        return execSqlIntAsResult("SELECT SUM(price) FROM PRODUCT");
+    }
+
+    @Override
+    public int count() {
+        return execSqlIntAsResult("SELECT COUNT(*) FROM PRODUCT");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ru.akirakozov.sd.refactoring.servlet;
 
+import org.junit.Before;
 import org.junit.Test;
 import ru.akirakozov.sd.refactoring.domain.Product;
 
@@ -9,15 +10,22 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 public class QueryProductsServletTest extends FakeDatabaseProductsTest {
+    private QueryProductsServlet servlet;
+
+    @Before
+    public void setUp() {
+        servlet = new QueryProductsServlet(database);
+    }
+
     private void testCommand(String command, String result) throws IOException {
         when(request.getParameter("command")).thenReturn(command);
-        new QueryProductsServlet().doGet(request, response);
+        servlet.doGet(request, response);
         stripAndCheck(writer.toString(), result);
     }
 
     @Test
     public void emptyTest() throws IOException {
-        new QueryProductsServlet().doGet(request, response);
+        servlet.doGet(request, response);
         stripAndCheck(writer.toString(), "Unknown command: null");
     }
 

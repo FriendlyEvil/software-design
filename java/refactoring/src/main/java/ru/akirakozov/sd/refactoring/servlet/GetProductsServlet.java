@@ -24,8 +24,7 @@ public class GetProductsServlet extends HttpServlet {
         response.getWriter().println("<html><body>");
         List<Product> products = database.selectAll();
         for (Product product : products) {
-            response.getWriter().print(product.toHtml());
-            response.getWriter().println("</br>");
+            response.getWriter().println(product.toHtml());
         }
         response.getWriter().println("</body></html>");
 
