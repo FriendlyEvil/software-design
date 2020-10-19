@@ -18,7 +18,7 @@ import java.io.StringWriter;
 import static org.mockito.Mockito.when;
 
 public class FakeDatabaseProductsTest {
-    private static final String DEFAULT_DATABASE_CONNECTION_STRING = "jdbc:sqlite:test.db";
+    private static final String DEFAULT_DATABASE_CONNECTION_STRING = "jdbc:sqlite:fake-test.db";
     protected final Database<Product> database;
 
     protected StringWriter writer = new StringWriter();
@@ -38,8 +38,6 @@ public class FakeDatabaseProductsTest {
     @Before
     public void setUpMocks() throws IOException {
         MockitoAnnotations.initMocks(this);
-        when(response.getWriter()).thenReturn(new PrintWriter(writer));
-        when(response.getWriter()).thenReturn(new PrintWriter(writer));
         when(response.getWriter()).thenReturn(new PrintWriter(writer));
     }
 

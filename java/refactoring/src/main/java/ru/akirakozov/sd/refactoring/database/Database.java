@@ -25,18 +25,18 @@ public abstract class Database<T> {
 
     public abstract int count();
 
-    public void insert(T obj) {
-        insert(List.of(obj));
+    public int insert(T obj) {
+        return insert(List.of(obj));
     }
 
-    public void insert(List<T> objs) {
+    public int insert(List<T> objs) {
         if (objs.size() == 0) {
             throw new IllegalArgumentException("count of object must be more that one");
         }
-        doInsert(objs);
+        return doInsert(objs);
     }
 
-    public abstract void doInsert(List<T> objs);
+    public abstract int doInsert(List<T> objs);
 
 
     protected List<List<String>> selectSql(String sql, List<String> fields) {
@@ -74,10 +74,10 @@ public abstract class Database<T> {
         return 0;
     }
 
-    protected void execSql(String sql) {
+    protected int execSql(String sql) {
         try (Connection c = DriverManager.getConnection(databaseConnectionString)) {
             try (Statement stmt = c.createStatement()) {
-                stmt.executeUpdate(sql);
+                return stmt.executeUpdate(sql);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

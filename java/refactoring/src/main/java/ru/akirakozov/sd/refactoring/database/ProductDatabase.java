@@ -59,13 +59,13 @@ public class ProductDatabase extends Database<Product> {
     }
 
     @Override
-    public void doInsert(List<Product> objs) {
+    public int doInsert(List<Product> objs) {
         StringBuilder builder = new StringBuilder("INSERT INTO PRODUCT(NAME, PRICE) VALUES ");
         for (int i = 0; i < objs.size() - 1; i++) {
             builder.append(objs.get(i).toSqlData());
             builder.append(", ");
         }
         builder.append(objs.get(objs.size() - 1).toSqlData());
-        execSql(builder.toString());
+        return execSql(builder.toString());
     }
 }
